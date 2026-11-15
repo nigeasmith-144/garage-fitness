@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mordy's Elite Fitness Hub</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style> body { font-family: 'Outfit', sans-serif; } </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen p-4 sm:p-6 pb-12">
+    <div class="max-w-md mx-auto space-y-6">
+        
+        <!-- Header Card -->
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-gradient-to-tr from-blue-600 to-emerald-500 rounded-2xl flex items-center justify-center font-black text-xl shadow-lg shadow-emerald-900/30 text-white">
+                        M5
+                    </div>
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <h1 class="text-xl font-black tracking-wide text-white">MORDY</h1>
+                            <span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full font-bold">Hockey • Rugby • Football</span>
+                        </div>
+                        <p class="text-slate-400 text-xs mt-0.5">Morning Pro Fitness Hub (Bonus Sunday Mode)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="grid grid-cols-3 gap-2 pt-2">
+                <div class="bg-slate-950/80 border border-slate-800/80 rounded-2xl p-3 text-center">
+                    <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center justify-center space-x-1">
+                        <span>🔥</span><span>Streak</span>
+                    </div>
+                    <div class="text-lg font-black text-orange-400 mt-0.5" id="streak-count">0 Days</div>
+                </div>
+                <div class="bg-slate-950/80 border border-slate-800/80 rounded-2xl p-3 text-center">
+                    <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center justify-center space-x-1">
+                        <span>⭐</span><span>XP Stars</span>
+                    </div>
+                    <div class="text-lg font-black text-amber-400 mt-0.5" id="star-count">0</div>
+                </div>
+                <div class="bg-slate-950/80 border border-slate-800/80 rounded-2xl p-3 text-center">
+                    <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center justify-center space-x-1">
+                        <span>💎</span><span>Gems</span>
+                    </div>
+                    <div class="text-lg font-black text-cyan-400 mt-0.5" id="gem-count">0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="grid grid-cols-3 gap-2 bg-slate-900 border border-slate-800 p-1.5 rounded-2xl">
+            <button onclick="switchTab('today')" id="tab-today" class="py-2.5 rounded-xl font-bold text-xs transition flex items-center justify-center space-x-1.5 bg-emerald-600 text-white shadow-lg shadow-emerald-900/30">
+                <span>⚡</span><span>Today's Workout</span>
+            </button>
+            <button onclick="switchTab('program')" id="tab-program" class="py-2.5 rounded-xl font-bold text-xs transition flex items-center justify-center space-x-1.5 text-slate-400 hover:text-white">
+                <span>📅</span><span>5 + 1 Program</span>
+            </button>
+            <button onclick="switchTab('shop')" id="tab-shop" class="py-2.5 rounded-xl font-bold text-xs transition flex items-center justify-center space-x-1.5 text-slate-400 hover:text-white">
+                <span>🎁</span><span>Reward Shop</span>
+            </button>
+        </div>
+
+        <!-- TAB CONTENT: TODAY'S WORKOUT -->
+        <div id="content-today" class="space-y-4">
+            <!-- Main Session Card -->
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-600/10 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="text-xs font-bold tracking-widest text-emerald-400 uppercase mb-1" id="session-day-label">LOADING...</div>
+                <h2 class="text-2xl font-black text-white" id="session-title">Loading Session...</h2>
+                <p class="text-slate-400 text-sm mt-1" id="session-desc">Building explosive power, core stiffness, and multi-directional agility.</p>
+                
+                <div class="mt-4 pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                    <span id="status-badge" class="inline-flex items-center space-x-1.5 bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold px-3 py-1.5 rounded-xl">
+                        <span>⏳</span><span>PENDING MORNING SESSION</span>
+                    </span>
+                    <span class="text-xs text-slate-400 font-semibold" id="progress-indicator">0 / 4 Completed</span>
+                </div>
+            </div>
+
+            <!-- Circuit Checklist -->
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl space-y-3">
+                <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                    <h3 class="font-bold text-sm flex items-center space-x-2 text-white">
+                        <span>📋</span><span>Today's Circuit</span>
+                    </h3>
+                    <span class="text-xs text-emerald-400 font-semibold">Tap to check off</span>
+                </div>
+                
+                <div class="space-y-2.5" id="checklist-container">
+                    <!-- Populated dynamically -->
+                </div>
+
+                <button onclick="completeSession()" id="complete-btn" class="w-full mt-3 bg-emerald-600 hover:bg-emerald-500 font-bold py-3.5 rounded-2xl transition shadow-lg shadow-emerald-900/30 flex items-center justify-center space-x-2 text-white">
+                    <span>🎉</span><span>Complete Session (+10 ⭐ / +2 💎)</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- TAB CONTENT: 5-DAY PROGRAM -->
+        <div id="content-program" class="space-y-3 hidden">
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl space-y-4">
+                <h2 class="font-bold text-base flex items-center space-x-2 text-white">
+                    <span>🗓️</span><span>Mordy's Garage Training Schedule</span>
+                </h2>
+                <div class="space-y-3 text-sm">
+                    <div class="bg-slate-950 p-3.5 rounded-2xl border border-slate-800">
+                        <div class="flex justify-between font-bold text-emerald-400 mb-1">
+                            <span>Monday: Agility & Footwork</span>
+                            <span class="text-xs text-slate-400">Day 1</span>
+                        </div>
+                        <p class="text-xs text-slate-300">Jump rope warmup, lateral skater jumps, fast-feet spot sprints, and lateral line hops.</p>
+                    </div>
+                    <div class="bg-slate-950 p-3.5 rounded-2xl border border-slate-800">
+                        <div class="flex justify-between font-bold text-emerald-400 mb-1">
+                            <span>Tuesday: Rugby Core Stability</span>
+                            <span class="text-xs text-slate-400">Day 2</span>
+                        </div>
+                        <p class="text-xs text-slate-300">Forearm planks, dead bugs, bird-dogs, and side planks for contact stiffness.</p>
+                    </div>
+                    <div class="bg-slate-950 p-3.5 rounded-2xl border border-slate-800">
+                        <div class="flex justify-between font-bold text-emerald-400 mb-1">
+                            <span>Wednesday: Pitch Stamina</span>
+                            <span class="text-xs text-slate-400">Day 3</span>
+                        </div>
+                        <p class="text-xs text-slate-300">Elliptical cross-trainer stop-and-go intervals (6 rounds: 30s sprint / 60s recovery).</p>
+                    </div>
+                    <div class="bg-slate-950 p-3.5 rounded-2xl border border-slate-800">
+                        <div class="flex justify-between font-bold text-emerald-400 mb-1">
+                            <span>Thursday: Lower Body Power</span>
+                            <span class="text-xs text-slate-400">Day 4</span>
+                        </div>
+                        <p class="text-xs text-slate-300">Explosive bodyweight squats, reverse lunges, broad jumps on mats, and calf raises.</p>
+                    </div>
+                    <div class="bg-slate-950 p-3.5 rounded-2xl border border-slate-800">
+                        <div class="flex justify-between font-bold text-emerald-400 mb-1">
+                            <span>Friday: Team Sport Circuit</span>
+                            <span class="text-xs text-slate-400">Day 5</span>
+                        </div>
+                        <p class="text-xs text-slate-300">Push-ups, mountain climbers, sumo squat pulses, and garage bear crawls.</p>
+                    </div>
+                    <div class="bg-slate-950 p-3.5 rounded-2xl border border-blue-500/40">
+                        <div class="flex justify-between font-bold text-blue-400 mb-1">
+                            <span>Sunday: Optional Match Cancelled Run</span>
+                            <span class="text-xs text-blue-400">Bonus Mode</span>
+                        </div>
+                        <p class="text-xs text-slate-300">Optional 20-minute steady run & aerobic flush when weekend fixtures are called off (+15 ⭐ / +3 💎).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB CONTENT: REWARD SHOP -->
+        <div id="content-shop" class="space-y-3 hidden">
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl space-y-4">
+                <h2 class="font-bold text-base flex items-center space-x-2 text-white">
+                    <span>🎁</span><span>Athlete Reward Shop</span>
+                </h2>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between bg-slate-950 p-3.5 rounded-2xl border border-slate-800">
+                        <div>
+                            <div class="font-semibold text-sm text-slate-200">Choice of Post-Workout Breakfast</div>
+                            <div class="text-xs text-amber-400 font-bold mt-0.5">Cost: 50 ⭐ Stars</div>
+                        </div>
+                        <button onclick="buyReward(50, 'stars', 'Breakfast Choice')" class="bg-amber-600 hover:bg-amber-500 text-xs px-3.5 py-2 rounded-xl font-bold transition text-white shadow-md">Redeem</button>
+                    </div>
+                    <div class="flex items-center justify-between bg-slate-950 p-3.5 rounded-2xl border border-slate-800">
+                        <div>
+                            <div class="font-semibold text-sm text-slate-200">Extra Match Day Snacks / Treats</div>
+                            <div class="text-xs text-amber-400 font-bold mt-0.5">Cost: 75 ⭐ Stars</div>
+                        </div>
+                        <button onclick="buyReward(75, 'stars', 'Match Day Snacks')" class="bg-amber-600 hover:bg-amber-500 text-xs px-3.5 py-2 rounded-xl font-bold transition text-white shadow-md">Redeem</button>
+                    </div>
+                    <div class="flex items-center justify-between bg-slate-950 p-3.5 rounded-2xl border border-slate-800">
+                        <div>
+                            <div class="font-semibold text-sm text-slate-200">New Sports Gear / Equipment Item</div>
+                            <div class="text-xs text-cyan-400 font-bold mt-0.5">Cost: 20 💎 Gems</div>
+                        </div>
+                        <button onclick="buyReward(20, 'gems', 'New Sports Gear')" class="bg-cyan-600 hover:bg-cyan-500 text-xs px-3.5 py-2 rounded-xl font-bold transition text-white shadow-md">Redeem</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const programData = {
+            0: { title: "Optional Pitch Run & Stamina Flush", desc: "Match cancelled mode! Keep the engine ticking with a light endurance run.", items: ["Dynamic Mobility & Joint Warm-Up (5 mins)", "Steady Endurance Run / Jog or Elliptical (20 mins)", "Post-Run Recovery & Calf Stretches (5 mins)"], isSunday: true },
+            1: { title: "Agility & Footwork", desc: "Quick-twitch cutting and multi-directional speed for hockey & football.", items: ["Garage Jump Rope Warm-Up (3 mins)", "Skater Jumps (30s lateral bounds)", "Fast-Feet Spot Sprints (20s max turnover)", "Lateral Line Hops (30s side-to-side)"] },
+            2: { title: "Rugby Core Stability", desc: "Trunk stiffness and contact protection for rugby and tackling.", items: ["Dynamic Torso Twists (Mobility warmup)", "Forearm Plank (45s rigid core)", "Dead Bugs (16 alternating reps)", "Bird-Dogs (16 reps back stability)"] },
+            3: { title: "Pitch Stamina (Elliptical)", desc: "Stop-and-go energy system conditioning mimicking match play.", items: ["Elliptical Warm-Up (Easy cruise pace)", "Stop-and-Go Pitch Sprints (6 rounds: 30s sprint / 60s recovery)", "Side Planks (30s per side)"] },
+            4: { title: "Lower Body Power", desc: "Explosive leg drive, acceleration, and vertical spring.", items: ["Ankle Bounces & Squats (Leg spring warmup)", "Explosive Bodyweight Squats (15 fast reps)", "Reverse Lunges (12 reps alternating)", "Broad Jumps on Mats (6 powerful jumps)"] },
+            5: { title: "Team Sport Circuit", desc: "Full-body functional strength and conditioning finish for the week.", items: ["Jump Rope & Mobility Warm-Up", "Team Sport Garage Circuit (Push-ups, mountain climbers, sumo squats)", "Bear Crawls (30s across garage floor)"] },
+            6: { title: "Saturday Rest & Recovery", desc: "Match day or rest day. Active recovery and hydration focus.", items: ["Light Stretching & Hydration Check (5 mins)", "Match Gear Prep", "Mental Focus & Rest"] }
+        };
+
+        let checkedState = JSON.parse(localStorage.getItem('mordy_checks_' + new Date().toDateString())) || [false, false, false, false];
+
+        function getDayOfWeek() {
+            return new Date().getDay(); // 0 is Sunday, 1 is Monday...
+        }
+
+        function switchTab(tab) {
+            ['today', 'program', 'shop'].forEach(t => {
+                document.getElementById('content-' + t).classList.add('hidden');
+                document.getElementById('tab-' + t).className = "py-2.5 rounded-xl font-bold text-xs transition flex items-center justify-center space-x-1.5 text-slate-400 hover:text-white";
+            });
+            document.getElementById('content-' + tab).classList.remove('hidden');
+            document.getElementById('tab-' + tab).className = "py-2.5 rounded-xl font-bold text-xs transition flex items-center justify-center space-x-1.5 bg-emerald-600 text-white shadow-lg shadow-emerald-900/30";
+        }
+
+        function render() {
+            let stars = parseInt(localStorage.getItem('mordy_stars')) || 0;
+            let gems = parseInt(localStorage.getItem('mordy_gems')) || 0;
+            let streak = parseInt(localStorage.getItem('mordy_streak')) || 0;
+            let completedToday = localStorage.getItem('mordy_completed_' + new Date().toDateString()) === 'true';
+
+            document.getElementById('star-count').innerText = stars;
+            document.getElementById('gem-count').innerText = gems;
+            document.getElementById('streak-count').innerText = streak + ' Days';
+
+            const dayNum = getDayOfWeek();
+            const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const session = programData[dayNum] || programData[1];
+
+            document.getElementById('session-day-label').innerText = `${dayNames[dayNum].toUpperCase()} SESSION (${session.isSunday ? 'BONUS MODE' : '6:30 AM'})`;
+            document.getElementById('session-title').innerText = session.title;
+            document.getElementById('session-desc').innerText = session.desc;
+
+            const checklistEl = document.getElementById('checklist-container');
+            checklistEl.innerHTML = '';
+            session.items.forEach((item, idx) => {
+                const isChecked = checkedState[idx] || completedToday;
+                checklistEl.innerHTML += `
+                    <label class="flex items-center space-x-3 bg-slate-950 p-3.5 rounded-2xl border border-slate-800 cursor-pointer hover:border-slate-700 transition">
+                        <input type="checkbox" onchange="toggleCheck(${idx})" class="w-4 h-4 accent-emerald-500 rounded cursor-pointer" ${isChecked ? 'checked disabled' : ''}>
+                        <span class="text-sm font-medium ${isChecked ? 'line-through text-slate-500' : 'text-slate-200'}">${item}</span>
+                    </label>
+                `;
+            });
+
+            const completedCount = completedToday ? session.items.length : checkedState.filter(Boolean).length;
+            document.getElementById('progress-indicator').innerText = `${completedCount} / ${session.items.length} Completed`;
+
+            const badge = document.getElementById('status-badge');
+            const btn = document.getElementById('complete-btn');
+
+            if (session.isSunday) {
+                badge.className = "inline-flex items-center space-x-1.5 bg-blue-500/20 border border-blue-500/30 text-blue-400 text-xs font-bold px-3 py-1.5 rounded-xl";
+                badge.innerHTML = "<span>🌟</span><span>SUNDAY BONUS MODE</span>";
+                btn.innerHTML = "<span>🌟</span><span>Complete Sunday Bonus (+15 ⭐ / +3 💎)</span>";
+            }
+
+            if (completedToday) {
+                badge.className = "inline-flex items-center space-x-1.5 bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-xs font-bold px-3 py-1.5 rounded-xl";
+                badge.innerHTML = "<span>🎉</span><span>SESSION COMPLETED TODAY</span>";
+                btn.innerText = "Completed Successfully! ⭐";
+                btn.disabled = true;
+                btn.className = "w-full mt-3 bg-slate-800 text-slate-500 font-bold py-3.5 rounded-2xl cursor-not-allowed";
+            }
+        }
+
+        function toggleCheck(idx) {
+            checkedState[idx] = !checkedState[idx];
+            localStorage.setItem('mordy_checks_' + new Date().toDateString(), JSON.stringify(checkedState));
+            render();
+        }
+
+        function completeSession() {
+            if (localStorage.getItem('mordy_completed_' + new Date().toDateString()) === 'true') return;
+
+            const dayNum = getDayOfWeek();
+            const isSun = (dayNum === 0);
+
+            let starReward = isSun ? 15 : 10;
+            let gemReward = isSun ? 3 : 2;
+
+            let stars = (parseInt(localStorage.getItem('mordy_stars')) || 0) + starReward;
+            let gems = (parseInt(localStorage.getItem('mordy_gems')) || 0) + gemReward;
+            let streak = (parseInt(localStorage.getItem('mordy_streak')) || 0) + 1;
+
+            localStorage.setItem('mordy_stars', stars);
+            localStorage.setItem('mordy_gems', gems);
+            localStorage.setItem('mordy_streak', streak);
+            localStorage.setItem('mordy_completed_' + new Date().toDateString(), 'true');
+
+            render();
+            alert(`Amazing effort, Mordy! +${starReward} XP Stars ⭐ and +${gemReward} Gems 💎 added to your profile!`);
+        }
+
+        function buyReward(cost, type, name) {
+            let balance = parseInt(localStorage.getItem('mordy_' + type)) || 0;
+            if (balance >= cost) {
+                balance -= cost;
+                localStorage.setItem('mordy_' + type, balance);
+                render();
+                alert(`Successfully redeemed: ${name}! Enjoy your reward.`);
+            } else {
+                alert(`Not enough ${type} yet! Complete more garage sessions.`);
+            }
+        }
+
+        render();
+    </script>
+</body>
+</html>
